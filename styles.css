@@ -18,16 +18,22 @@ body {
 
 /* Header and Navigation */
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 5%;
-    background-color: var(--primary-color);
-    position: fixed;
-    width: 100%;
+    position: sticky;
     top: 0;
-    z-index: 1000;
-    box-shadow: var(--shadow);
+    width: 100%;
+    background-color: var(--primary-color);
+    padding: 1.5rem 5%;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Hide the header when scrolling */
+body:has(:hover) header {
+    opacity: 0;
+}
+
+/* Show the header when hovering over it */
+header:hover {
+    opacity: 1;
 }
 
 .logo {
@@ -340,10 +346,37 @@ section {
     transition: var(--transition);
 }
 
-    .social-icon:hover {
-        background-color: var(--secondary-color);
-        transform: translateY(-3px);
+.social-icon:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-3px);
+}
+
+.mobile-only {
+    display: none;
+}
+
+/* Show it only on mobile screens */
+@media (max-width: 768px) {
+    .mobile-only {
+        display: block;
+        text-align: center;
+        background-color: var(--accent-color);
+        padding: 2rem;
+        margin-top: 2rem;
+        border-radius: 10px;
     }
+
+        .mobile-only h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .mobile-only p {
+            font-size: 1.2rem;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+        }
+}
 
 /* Footer */
 footer {
@@ -386,3 +419,5 @@ footer {
         padding: 3rem 5%;
     }
 }
+
+
