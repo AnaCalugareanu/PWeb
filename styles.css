@@ -18,23 +18,19 @@ body {
 
 /* Header and Navigation */
 header {
-    position: sticky;
-    top: 0;
-    width: 100%;
-    background-color: var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 1.5rem 5%;
-    transition: opacity 0.5s ease-in-out;
+    background-color: var(--primary-color);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow);
 }
 
-/* Hide the header when scrolling */
-body:has(:hover) header {
-    opacity: 0;
-}
 
-/* Show the header when hovering over it */
-header:hover {
-    opacity: 1;
-}
 
 .logo {
     font-size: 1.8rem;
@@ -419,5 +415,95 @@ footer {
         padding: 3rem 5%;
     }
 }
+/* Mascot Styling */
+#mascot {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 160px;
+    cursor: pointer;
+    opacity: 0; 
+    animation: mascot-appear 0.5s ease-in-out 3s forwards, mascot-move 4s ease-in-out infinite alternate;
+    animation-fill-mode: forwards;
+}
 
+@keyframes mascot-move {
+    0% {
+        transform: translateX(0);
+    }
 
+    100% {
+        transform: translateX(-60px);
+    }
+}
+
+@keyframes mascot-appear {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+#mascot img {
+    width: 100%;
+}
+
+@keyframes bounce-ball {
+    0% {
+        transform: translateY(0);
+    }
+
+    20% {
+        transform: translateY(-25px);
+    }
+
+    40% {
+        transform: translateY(0);
+    }
+
+    60% {
+        transform: translateY(-15px);
+    }
+
+    75% {
+        transform: translateY(0);
+    }
+
+    85% {
+        transform: translateY(-5px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+#mascot:hover {
+    animation-play-state: paused; 
+}
+
+    #mascot:hover img {
+        animation: bounce-ball 1s ease-out forwards;
+    }
+
+.mascot-message {
+    position: absolute;
+    bottom: 120%;
+    right: 0;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #5C4033;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    white-space: nowrap;
+}
+
+#mascot:hover .mascot-message {
+    opacity: 1;
+}
