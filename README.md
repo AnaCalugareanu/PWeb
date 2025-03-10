@@ -13,6 +13,9 @@ A responsive landing page for a fictional specialty coffee shop called "Brew Hav
 ## Live Demo
 
 [View the live demo](https://youtu.be/PKpy272qn6g)
+
+## Website
+
 [View the website](https://anacalugareanu.github.io/PWeb/)
 
 ## Features
