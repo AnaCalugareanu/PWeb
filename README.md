@@ -4,11 +4,11 @@ A responsive landing page for a fictional specialty coffee shop called "Brew Hav
 
 ## Screenshots
 
-![Brew Haven Screenshot 1](screenshots/Screenshot1.jpg)
-![Brew Haven Screenshot 2](screenshots/Screenshot2.jpg)
-![Brew Haven Screenshot 3](screenshots/Screenshot3.jpg)
-![Brew Haven Screenshot 4](screenshots/Screenshot4.jpg)
-![Brew Haven Screenshot 5](screenshots/Screenshot5.jpg)
+![Brew Haven Screenshot 1](images/Screenshot1.jpg)
+![Brew Haven Screenshot 2](images/Screenshot2.jpg)
+![Brew Haven Screenshot 3](images/Screenshot3.jpg)
+![Brew Haven Screenshot 4](images/Screenshot4.jpg)
+![Brew Haven Screenshot 5](images/Screenshot5.jpg)
 
 ## Live Demo
 
