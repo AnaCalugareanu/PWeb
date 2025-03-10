@@ -41,6 +41,15 @@ nav ul {
     gap: 2rem;
 }
 
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+}
+
+
 nav a {
     color: var(--text-light);
     font-weight: 500;
@@ -55,6 +64,13 @@ nav a {
 section {
     padding: 5rem 10%;
 }
+
+@media (max-width: 768px) {
+    section {
+        padding: 3rem 5%;
+    }
+}
+
 
     section h2 {
         font-size: 2.5rem;
@@ -110,6 +126,17 @@ section {
         margin-bottom: 2rem;
     }
 
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.5rem; /* Make the title smaller on mobile */
+    }
+
+    .hero-content p {
+        font-size: 1.2rem; /* Make the paragraph smaller on mobile */
+    }
+}
+
+
 /* About Section */
 #about {
     background-color: white;
@@ -153,6 +180,15 @@ section {
     margin-bottom: 3rem;
     justify-content: center;
 }
+
+@media (max-width: 768px) {
+    .menu-items {
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+    }
+}
+
 
 .menu-category {
     flex: 1;
@@ -234,6 +270,19 @@ section {
     display: flex;
     gap: 3rem;
 }
+
+@media (max-width: 768px) {
+    .contact-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .contact-form {
+        width: 90%;
+    }
+}
+
 
 .contact-form {
     flex: 2;
