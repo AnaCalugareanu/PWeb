@@ -12,7 +12,7 @@ A responsive landing page for a fictional specialty coffee shop called "Brew Hav
 
 ## Live Demo
 
-[View the live demo](https://youtu.be/PKpy272qn6g)
+[View the live demo](https://youtu.be/HfBfsW827ps)
 
 ## Website
 
