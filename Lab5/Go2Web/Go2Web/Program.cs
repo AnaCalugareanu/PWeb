@@ -1,4 +1,7 @@
-﻿internal class Program
+﻿using System.Net.Sockets;
+using System.Text.RegularExpressions;
+
+internal class Program
 {
     private static void Main(string[] args)
     {
@@ -31,13 +34,45 @@
 
     private static void MakeHttpRequest(string url)
     {
-        // Placeholder for now
-        Console.WriteLine($"Would fetch URL: {url}");
+        try
+        {
+            Uri uri = new Uri(url);
+
+            string host = uri.Host;
+            string path = string.IsNullOrEmpty(uri.PathAndQuery) ? "/" : uri.PathAndQuery;
+
+            using (TcpClient client = new TcpClient(host, 80))
+            using (NetworkStream stream = client.GetStream())
+            using (StreamWriter writer = new StreamWriter(stream))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                writer.Write(
+                            $"GET {path} HTTP/1.1\r\n" +
+                            $"Host: {host}\r\n" +
+                            $"User-Agent: go2web/1.0\r\n" +
+                            $"Connection: close\r\n\r\n");
+
+                writer.Flush();
+
+                string response = reader.ReadToEnd();
+
+                string body = response.Contains("\r\n\r\n")
+                    ? response.Split(new[] { "\r\n\r\n" }, 2, StringSplitOptions.None)[1]
+                    : response;
+
+                string cleanText = Regex.Replace(body, "<.*?>", string.Empty);
+
+                Console.WriteLine(cleanText);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
     }
 
     private static void PerformSearch(string searchTerm)
     {
-        // Placeholder for now
         Console.WriteLine($"Would search for: {searchTerm}");
     }
 }
