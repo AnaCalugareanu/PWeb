@@ -1,17 +1,20 @@
 ﻿using System.Net.Sockets;
+using System.Text;
 using System.Text.RegularExpressions;
 
 internal class Program
 {
+    private static Dictionary<string, string> cache = new Dictionary<string, string>();
+
     private static void Main(string[] args)
     {
-        if (args.Length == 0 || args[0] == "-ch")
+        if (args.Length == 0 || args[0] == "-h")
         {
             ShowHelp();
         }
         else if (args[0] == "-u" && args.Length > 1)
         {
-            MakeHttpRequest(args[1], isSearch: true);
+            MakeHttpRequest(args[1], isSearch: false);
         }
         else if (args[0] == "-s" && args.Length > 1)
         {
@@ -40,6 +43,17 @@ internal class Program
             string host = uri.Host;
             string path = string.IsNullOrEmpty(uri.PathAndQuery) ? "/" : uri.PathAndQuery;
 
+            string fileSafeUrl = Convert.ToBase64String(Encoding.UTF8.GetBytes(url));
+            string cachePath = Path.Combine("cache", fileSafeUrl + ".txt");
+
+            if (File.Exists(cachePath))
+            {
+                Console.WriteLine("=== [CACHED RESPONSE] ===");
+                string cachedResponse = File.ReadAllText(cachePath);
+                ProcessHttpResponse(cachedResponse, isSearch);
+                return;
+            }
+
             using (TcpClient client = new TcpClient(host, 80))
             using (NetworkStream stream = client.GetStream())
             using (StreamWriter writer = new StreamWriter(stream))
@@ -53,8 +67,10 @@ internal class Program
                 writer.Flush();
 
                 string response = reader.ReadToEnd();
-                Console.WriteLine("=== RAW RESPONSE HEADERS AND BODY ===");
-                Console.WriteLine(response);
+                Directory.CreateDirectory("cache");
+                File.WriteAllText(cachePath, response);
+                /*Console.WriteLine("=== RAW RESPONSE HEADERS AND BODY ===");
+                Console.WriteLine(response);*/
 
                 if (response.StartsWith("HTTP/1.1 301") || response.StartsWith("HTTP/1.1 302"))
                 {
@@ -75,36 +91,41 @@ internal class Program
                     }
                 }
 
-                string[] parts = response.Split(new[] { "\r\n\r\n" }, 2, StringSplitOptions.None);
-                string body = parts.Length > 1 ? parts[1] : response;
-
-                if (isSearch)
-                {
-                    var matches = Regex.Matches(body, "<a[^>]*class=\"result__a\"[^>]*href=\"([^\"]+)\"[^>]*>");
-                    int count = 0;
-                    foreach (Match match in matches)
-                    {
-                        string link = match.Groups[1].Value;
-                        Console.WriteLine($"{++count}. {link}");
-                        if (count >= 10) break;
-                    }
-
-                    if (count == 0)
-                    {
-                        Console.WriteLine("No results found or parsing failed.");
-                    }
-
-                    return;
-                }
-
-                string cleanText = Regex.Replace(body, "<.*?>", string.Empty);
-                Console.WriteLine(cleanText);
+                ProcessHttpResponse(response, isSearch);
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
         }
+    }
+
+    private static void ProcessHttpResponse(string response, bool isSearch)
+    {
+        string[] parts = response.Split(new[] { "\r\n\r\n" }, 2, StringSplitOptions.None);
+        string body = parts.Length > 1 ? parts[1] : response;
+
+        if (isSearch)
+        {
+            var matches = Regex.Matches(body, "<a[^>]*class=\"result__a\"[^>]*href=\"([^\"]+)\"[^>]*>");
+            int count = 0;
+            foreach (Match match in matches)
+            {
+                string link = match.Groups[1].Value;
+                Console.WriteLine($"{++count}. {link}");
+                if (count >= 10) break;
+            }
+
+            if (count == 0)
+            {
+                Console.WriteLine("No results found or parsing failed.");
+            }
+
+            return;
+        }
+
+        string cleanText = Regex.Replace(body, "<.*?>", string.Empty);
+        Console.WriteLine(cleanText);
     }
 
     private static void PerformSearch(string searchTerm)
