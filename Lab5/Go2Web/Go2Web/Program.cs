@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System.Net.Security;
+using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -43,7 +44,10 @@ internal class Program
             string host = uri.Host;
             string path = string.IsNullOrEmpty(uri.PathAndQuery) ? "/" : uri.PathAndQuery;
 
-            string fileSafeUrl = Convert.ToBase64String(Encoding.UTF8.GetBytes(url));
+            string fileSafeUrl = Convert.ToBase64String(Encoding.UTF8.GetBytes(url))
+                                .Replace('+', '-')
+                                .Replace('/', '_')
+                                .Replace('=', '.');
             string cachePath = Path.Combine("cache", fileSafeUrl + ".txt");
 
             if (File.Exists(cachePath))
@@ -53,45 +57,57 @@ internal class Program
                 ProcessHttpResponse(cachedResponse, isSearch);
                 return;
             }
+            bool isHttps = url.ToLower().StartsWith("https://");
+            var port = isHttps ? 443 : 80;
 
-            using (TcpClient client = new TcpClient(host, 80))
-            using (NetworkStream stream = client.GetStream())
-            using (StreamWriter writer = new StreamWriter(stream))
-            using (StreamReader reader = new StreamReader(stream))
+            using (TcpClient client = new TcpClient(host, port))
             {
-                writer.Write(
-                    $"GET {path} HTTP/1.1\r\n" +
-                    $"Host: {host}\r\n" +
-                    $"User-Agent: go2web/1.0\r\n" +
-                    $"Connection: close\r\n\r\n");
-                writer.Flush();
+                Stream baseStream = client.GetStream();
 
-                string response = reader.ReadToEnd();
-                Directory.CreateDirectory("cache");
-                File.WriteAllText(cachePath, response);
-                /*Console.WriteLine("=== RAW RESPONSE HEADERS AND BODY ===");
-                Console.WriteLine(response);*/
-
-                if (response.StartsWith("HTTP/1.1 301") || response.StartsWith("HTTP/1.1 302"))
+                if (isHttps)
                 {
-                    var match = Regex.Match(response, "Location: (.+?)\r\n");
-                    if (match.Success)
-                    {
-                        string newUrl = match.Groups[1].Value.Trim();
-                        Console.WriteLine($"Redirecting to: {newUrl}");
-
-                        if (newUrl.StartsWith("https://"))
-                        {
-                            Console.WriteLine("Redirected to HTTPS. HTTPS is not supported yet.");
-                            return;
-                        }
-
-                        MakeHttpRequest(newUrl, isSearch);
-                        return;
-                    }
+                    var sslStream = new SslStream(baseStream, false);
+                    sslStream.AuthenticateAsClient(host);
+                    baseStream = sslStream; // overwrite with SSL stream
                 }
 
-                ProcessHttpResponse(response, isSearch);
+                using (var writer = new StreamWriter(baseStream))
+                using (var reader = new StreamReader(baseStream))
+                {
+                    writer.Write(
+                            $"GET {path} HTTP/1.1\r\n" +
+                            $"Host: {host}\r\n" +
+                            $"User-Agent: go2web/1.0\r\n" +
+                            $"Connection: close\r\n\r\n");
+                    writer.Flush();
+
+                    string response = reader.ReadToEnd();
+                    Directory.CreateDirectory("cache");
+                    File.WriteAllText(cachePath, response);
+                    /*Console.WriteLine("=== RAW RESPONSE HEADERS AND BODY ===");
+                    Console.WriteLine(response);*/
+
+                    if (response.StartsWith("HTTP/1.1 301") || response.StartsWith("HTTP/1.1 302"))
+                    {
+                        var match = Regex.Match(response, "Location: (.+?)\r\n");
+                        if (match.Success)
+                        {
+                            string newUrl = match.Groups[1].Value.Trim();
+                            Console.WriteLine($"Redirecting to: {newUrl}");
+
+                            if (newUrl.StartsWith("https://"))
+                            {
+                                Console.WriteLine("Redirected to HTTPS. HTTPS is not supported yet.");
+                                return;
+                            }
+
+                            MakeHttpRequest(newUrl, isSearch);
+                            return;
+                        }
+                    }
+
+                    ProcessHttpResponse(response, isSearch);
+                }
             }
         }
         catch (Exception ex)
@@ -131,7 +147,7 @@ internal class Program
     private static void PerformSearch(string searchTerm)
     {
         string encodedQuery = Uri.EscapeDataString(searchTerm);
-        string url = $"http://html.duckduckgo.com/html/?q={encodedQuery}";
+        string url = $"https://html.duckduckgo.com/html/?q={encodedQuery}";
         MakeHttpRequest(url);
     }
 }
