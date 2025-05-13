@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using HtmlAgilityPack;
 
 internal class Program
 {
@@ -123,18 +124,37 @@ internal class Program
 
         if (isSearch)
         {
-            var matches = Regex.Matches(body, "<a[^>]*class=\"result__a\"[^>]*href=\"([^\"]+)\"[^>]*>");
-            int count = 0;
-            foreach (Match match in matches)
+            var doc = new HtmlDocument();
+            doc.LoadHtml(body);
+
+            var urlNodes = doc.DocumentNode.SelectNodes("//a[contains(@class, 'result__url')]");
+
+            if (urlNodes == null || urlNodes.Count == 0)
             {
-                string link = match.Groups[1].Value;
-                Console.WriteLine($"{++count}. {link}");
-                if (count >= 10) break;
+                Console.WriteLine("No valid links found.");
+                return;
             }
 
-            if (count == 0)
+            int count = 0;
+            foreach (var node in urlNodes)
             {
-                Console.WriteLine("No results found or parsing failed.");
+                string urlText = node.InnerText.Trim();
+                if (!string.IsNullOrEmpty(urlText))
+                {
+                    string cleanedUrl = urlText.Trim();
+
+                    // Always start with https:// and remove any starting www.
+                    cleanedUrl = cleanedUrl.Replace("www.", "");
+                    if (!cleanedUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                    {
+                        cleanedUrl = "https://" + cleanedUrl;
+                    }
+
+                    Console.WriteLine(cleanedUrl);
+
+                    count++;
+                    if (count >= 10) break;
+                }
             }
 
             return;
@@ -148,6 +168,6 @@ internal class Program
     {
         string encodedQuery = Uri.EscapeDataString(searchTerm);
         string url = $"https://html.duckduckgo.com/html/?q={encodedQuery}";
-        MakeHttpRequest(url);
+        MakeHttpRequest(url, true);
     }
 }
