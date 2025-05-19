@@ -13,11 +13,20 @@
   </div>
 
   <div
-    class="flex flex-row flex-wrap items-center justify-around w-full"
+    class="flex flex-row flex-wrap items-center justify-start w-full"
     style="padding: 30px"
+    *ngIf="books && books.length > 0; else loading"
   >
     <div *ngFor="let book of books" style="padding: 20px">
       <app-card [book]="book"></app-card>
     </div>
   </div>
+
+  <ng-template #loading>
+    <h1 class="text-3xl font-bold mb-4" style="padding: 50px">
+      This great library is loading, please wait a moment...
+    </h1>
+  </ng-template>
+
+  <button nz-button nzType="primary" (click)="loadMoreBooks()">Load more books</button>
 </div>
