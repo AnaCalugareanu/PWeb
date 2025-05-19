@@ -1,1 +1,23 @@
-<p>home works!</p>
+<div class="flex flex-col items-center justify-start" style="width: 100%">
+  <div class="p-8">
+    <h1 class="text-3xl font-bold mb-4">Welcome to the Book Club!</h1>
+    <p class="mb-4">
+      This is friendly community where we share our favorite reads and more.
+    </p>
+    <p>Explore the features and enjoy your stay!</p>
+    <div class="mt-8">
+      <a routerLink="/about" class="text-blue-500 hover:underline"
+        >Learn more about us</a
+      >
+    </div>
+  </div>
+
+  <div
+    class="flex flex-row flex-wrap items-center justify-around w-full"
+    style="padding: 30px"
+  >
+    <div *ngFor="let book of books" style="padding: 20px">
+      <app-card [book]="book"></app-card>
+    </div>
+  </div>
+</div>
