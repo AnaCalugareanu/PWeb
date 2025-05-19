@@ -1,0 +1,38 @@
+<div style="margin: 20px 100px 100px 100px">
+  <h2>Here are all the reviews written by you.</h2>
+  <nz-table #nzTable [nzData]="reviews" nzTableLayout="fixed">
+    <thead>
+      <tr>
+        <th nzWidth="60px"></th>
+        <th>Book title</th>
+        <th>Author</th>
+        <th>Review grade</th>
+        <th>Tags</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (data of nzTable.data; track data) {
+      <tr>
+        <td>{{ $index + 1 }}</td>
+        <td>{{ data.bookTitle }}</td>
+        <td>{{ data.bookAuthor }}</td>
+        <td><nz-rate [ngModel]="data.grade" nzDisabled></nz-rate></td>
+        <td>{{ data.tags.join(", ") }}</td>
+        <td>
+          <button
+            nz-button
+            nzType="primary"
+            style="margin-right: 20px"
+            (click)="onEdit(data.id)"
+          >
+            Edit
+          </button>
+          <button nz-button nzType="primary" nzDanger>Delete</button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </nz-table>
+</div>
+<app-modal [reviewId]="reviewId" [modalIsVisible]="modalIsVisible" (modalClosed)="handleModalClosed()"></app-modal>

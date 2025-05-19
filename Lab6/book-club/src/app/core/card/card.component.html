@@ -23,8 +23,10 @@
   />
 </ng-template>
 <ng-template #actionReview>
-  <p style="margin: 0" (click)="handleReview()">Review</p>
+  <p style="margin: 0" (click)="handleReview()">Add Review</p>
 </ng-template>
 <ng-template #actionAddToWishlist>
   <p style="margin: 0" (click)="handleAddToWishlist()">Add to Wishlist</p>
 </ng-template>
+
+<app-modal [book]="book" [modalIsVisible]="modalIsVisible"></app-modal>

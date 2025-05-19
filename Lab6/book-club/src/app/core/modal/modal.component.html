@@ -1,0 +1,84 @@
+<nz-modal
+  [(nzVisible)]="modalIsVisible"
+  nzTitle="Write a Review for {{ bookTitle }} by {{ bookAuthor }}"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+>
+  <ng-container *nzModalContent>
+    <form #reviewForm="ngForm">
+      <div class="flex flex-row justify-between items-center">
+        <div class="mb-4">
+          <label for="reviewText" class="block font-semibold mb-1"
+            >Your Review</label
+          >
+          <input
+            nz-input
+            type="text"
+            class="border rounded p-1"
+            placeholder="Tag 1"
+            [(ngModel)]="reviewAuthor"
+            name="reviewAuthor"
+            maxlength="50"
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block font-semibold mb-1">Grade</label>
+          <nz-rate
+            [(ngModel)]="reviewGrade"
+            name="reviewGrade"
+            [nzCount]="5"
+          ></nz-rate>
+        </div>
+      </div>
+      <div class="mb-4">
+        <label for="reviewText" class="block font-semibold mb-1"
+          >Your Review</label
+        >
+        <textarea
+          nz-input
+          id="reviewText"
+          class="w-full border rounded p-2"
+          rows="3"
+          [(ngModel)]="reviewText"
+          name="reviewText"
+          required
+        ></textarea>
+      </div>
+      <div class="mb-4">
+        <label class="block font-semibold mb-1">Tags (3 required)</label>
+        <div class="flex" style="gap: 10px">
+          <input
+            nz-input
+            type="text"
+            class="border rounded p-1"
+            placeholder="Tag 1"
+            [(ngModel)]="tag1"
+            name="tag1"
+            maxlength="20"
+            required
+          />
+          <input
+            nz-input
+            type="text"
+            class="border rounded p-1"
+            placeholder="Tag 2"
+            [(ngModel)]="tag2"
+            name="tag2"
+            maxlength="20"
+            required
+          />
+          <input
+            nz-input
+            type="text"
+            class="border rounded p-1"
+            placeholder="Tag 3"
+            [(ngModel)]="tag3"
+            name="tag3"
+            maxlength="20"
+            required
+          />
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>
