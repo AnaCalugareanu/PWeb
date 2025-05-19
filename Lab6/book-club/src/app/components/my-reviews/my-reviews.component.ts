@@ -29,14 +29,12 @@ export class MyReviewsComponent {
 
   ngOnInit(): void {
     this.bookService.reviews$.subscribe((reviews) => {
-      console.log('Reviews:', reviews);
       this.reviews = reviews;
     });
   }
 
   onEdit(id: number) {
     this.reviewId = id;
-    console.log('🚀 ~ MyReviewsComponent ~ onEdit ~ reviewId:', this.reviewId);
     this.modalIsVisible = true;
   }
 

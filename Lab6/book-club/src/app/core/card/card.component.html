@@ -23,10 +23,25 @@
   />
 </ng-template>
 <ng-template #actionReview>
-  <p style="margin: 0" (click)="handleReview()">Add Review</p>
+  <p
+    style="margin: 0; gap: 5px"
+    class="flex flex-row items-center justify-center"
+    (click)="handleReview()"
+  >
+    Add Review
+  </p>
 </ng-template>
 <ng-template #actionAddToWishlist>
-  <p style="margin: 0" (click)="handleAddToWishlist()">Add to Wishlist</p>
+  <p
+    style="margin: 0; gap: 5px"
+    class="flex flex-row items-center justify-center"
+    (click)="handleAddToWishlist()"
+  >
+    <span *ngIf="book.isInWishlist" class="material-symbols-outlined"
+      >favorite</span
+    >
+    Add to Wishlist
+  </p>
 </ng-template>
 
 <app-modal [book]="book" [modalIsVisible]="modalIsVisible"></app-modal>
