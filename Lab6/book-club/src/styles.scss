@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* You can remove this if it's in angular.json styles */
+@import "ng-zorro-antd/ng-zorro-antd.min.css";
