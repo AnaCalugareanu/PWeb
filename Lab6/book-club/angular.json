@@ -96,8 +96,7 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
-            ],
+             "src/styles.scss"            ],
             "scripts": []
           }
         }
