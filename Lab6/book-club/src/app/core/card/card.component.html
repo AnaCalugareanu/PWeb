@@ -1,22 +1,30 @@
-<nz-card style="width:300px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
-      <nz-card-meta
-        nzTitle="Card title"
-        nzDescription="This is the description"
-        [nzAvatar]="avatarTemplate"
-      ></nz-card-meta>
-    </nz-card>
-    <ng-template #avatarTemplate>
-      <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
-    </ng-template>
-    <ng-template #coverTemplate>
-      <img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
-    </ng-template>
-    <ng-template #actionSetting>
-        <h3>settings</h3>
-    </ng-template>
-    <ng-template #actionEdit>
-      <h2>Edit</h2>
-    </ng-template>
-    <ng-template #actionEllipsis>
-      <h3>...</h3>
-    </ng-template>
+<nz-card
+  style="width: 300px"
+  [nzCover]="coverTemplate"
+  [nzActions]="[actionReview, actionAddToWishlist]"
+>
+  <nz-card-meta
+    [nzTitle]="book.title + ' by ' + book.authorName"
+    [nzDescription]="book.description"
+  ></nz-card-meta>
+</nz-card>
+<ng-template #coverTemplate>
+  <img
+    alt="example"
+    [src]="book.coverUrl"
+    style="
+      height: 250px;
+      width: auto;
+      max-width: 100%;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto;
+    "
+  />
+</ng-template>
+<ng-template #actionReview>
+  <p style="margin: 0" (click)="handleReview()">Review</p>
+</ng-template>
+<ng-template #actionAddToWishlist>
+  <p style="margin: 0" (click)="handleAddToWishlist()">Add to Wishlist</p>
+</ng-template>
