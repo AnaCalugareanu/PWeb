@@ -7,8 +7,11 @@ import { Observable, BehaviorSubject } from 'rxjs';
 })
 export class BookService {
   private apiUrl = 'https://openlibrary.org/search.json';
+  private isBrowser: boolean;
 
-  private wishlistSubject = new BehaviorSubject<any[]>([]);
+  private wishlistSubject = new BehaviorSubject<any[]>(
+    this.loadWishlistFromStorage()
+  );
   wishlist$ = this.wishlistSubject.asObservable();
 
   private reviewsSubject = new BehaviorSubject<any[]>(
@@ -17,13 +20,27 @@ export class BookService {
   reviews$ = this.reviewsSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    this.reviews$.subscribe((reviews) => {
-      localStorage.setItem('bookReviews', JSON.stringify(reviews));
-    });
+    this.isBrowser = typeof window !== 'undefined';
+
+    if (this.isBrowser) {
+      this.reviews$.subscribe((reviews) => {
+        localStorage.setItem('bookReviews', JSON.stringify(reviews));
+      });
+      this.wishlist$.subscribe((wishlist) => {
+        localStorage.setItem('bookWishlist', JSON.stringify(wishlist));
+      });
+    }
   }
 
   private loadReviewsFromStorage(): any[] {
+    if (typeof window === 'undefined') return [];
     const data = localStorage.getItem('bookReviews');
+    return data ? JSON.parse(data) : [];
+  }
+
+  private loadWishlistFromStorage(): any[] {
+    if (typeof window === 'undefined') return [];
+    const data = localStorage.getItem('bookWishlist');
     return data ? JSON.parse(data) : [];
   }
 
@@ -62,5 +79,13 @@ export class BookService {
       newReviews[index] = updatedReview;
       this.reviewsSubject.next(newReviews);
     }
+  }
+
+  removeFromWishlist(book: any): void {
+    const currentWishlist = this.wishlistSubject.value;
+    const updatedWishlist = currentWishlist.filter(
+      (b) => !(b.title === book.title && b.authorName === book.authorName)
+    );
+    this.wishlistSubject.next(updatedWishlist);
   }
 }

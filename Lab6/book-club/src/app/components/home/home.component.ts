@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../shared/bookService';
 import { CardComponent } from '../../core/card/card.component';
 import { CommonModule } from '@angular/common';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -11,16 +12,23 @@ import { NzButtonComponent } from 'ng-zorro-antd/button';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   books: any[] = [];
   loading: boolean = false;
   private allBooks: any[] = [];
   private currentIndex: number = 0;
+  wishlist: any[] = [];
+  private wishlistSub?: Subscription;
 
   constructor(private bookService: BookService) {}
 
   ngOnInit(): void {
     this.loading = true;
+    this.wishlistSub = this.bookService.wishlist$.subscribe((wishlist) => {
+      this.wishlist = wishlist;
+      this.updateBooksWishlistStatus();
+    });
+
     this.bookService.getBooks('romance').subscribe(
       (data) => {
         this.allBooks = data.docs.map((book: any) => ({
@@ -35,6 +43,7 @@ export class HomeComponent {
         }));
         this.currentIndex = 12;
         this.books = this.allBooks.slice(0, this.currentIndex);
+        this.updateBooksWishlistStatus();
         this.loading = false;
       },
       (error) => {
@@ -48,5 +57,19 @@ export class HomeComponent {
     const nextIndex = this.currentIndex + 12;
     this.books = this.allBooks.slice(0, nextIndex);
     this.currentIndex = nextIndex;
+    this.updateBooksWishlistStatus();
+  }
+
+  updateBooksWishlistStatus() {
+    this.books = this.books.map((book) => ({
+      ...book,
+      isInWishlist: this.wishlist.some(
+        (w) => w.title === book.title && w.authorName === book.authorName
+      ),
+    }));
+  }
+
+  ngOnDestroy(): void {
+    this.wishlistSub?.unsubscribe();
   }
 }

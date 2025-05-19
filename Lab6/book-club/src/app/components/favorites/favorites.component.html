@@ -1,1 +1,29 @@
-<p>favorites works!</p>
+<div style="margin: 20px 100px 100px 100px">
+  <h2>This is your wishlist.</h2>
+  <nz-table #nzTable [nzData]="wishList" nzTableLayout="fixed">
+    <thead>
+      <tr>
+        <th nzWidth="60px"></th>
+        <th>Book title</th>
+        <th>Author</th>
+        <th>Publish year</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (data of nzTable.data; track data) {
+      <tr>
+        <td>{{ $index + 1 }}</td>
+        <td>{{ data.title }}</td>
+        <td>{{ data.authorName }}</td>
+        <td>{{ data.publishYear }}</td>
+        <td>
+          <button (click)="handleRemove(data)" nz-button nzType="primary" nzDanger>
+            Remove
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </nz-table>
+</div>
