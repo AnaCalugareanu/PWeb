@@ -1,5 +1,5 @@
 <div style="margin: 20px 100px 100px 100px">
-  <h2>Here are all the reviews written by you.</h2>
+  <h2>Here are all the reviews written by you and other readers.</h2>
   <nz-table #nzTable [nzData]="reviews" nzTableLayout="fixed">
     <thead>
       <tr>
@@ -35,4 +35,8 @@
     </tbody>
   </nz-table>
 </div>
-<app-modal [reviewId]="reviewId" [modalIsVisible]="modalIsVisible" (modalClosed)="handleModalClosed()"></app-modal>
+<app-modal
+  [reviewId]="reviewId"
+  [modalIsVisible]="modalIsVisible"
+  (modalClosed)="handleModalClosed()"
+></app-modal>
