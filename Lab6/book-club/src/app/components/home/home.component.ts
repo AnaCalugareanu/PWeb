@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BookService } from '../../shared/bookService';
 import { CardComponent } from '../../core/card/card.component';
 import { CommonModule } from '@angular/common';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
 import { Subscription } from 'rxjs';
-
 import { FormsModule } from '@angular/forms';
-
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +23,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
     NzInputModule,
     NzIconModule,
     NzDividerModule,
+    NzSelectModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -36,8 +36,13 @@ export class HomeComponent implements OnInit {
   wishlist: any[] = [];
   private wishlistSub?: Subscription;
   searchTerm: string = '';
+  selectedFilter: string = '';
+  selectedSort: string = 'title';
 
-  constructor(private bookService: BookService) {}
+  constructor(
+    private bookService: BookService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loading = true;
@@ -48,11 +53,39 @@ export class HomeComponent implements OnInit {
 
     this.getBooks('harry potter');
   }
+  onFilterChange(event: string) {
+    this.selectedFilter = event;
+    this.getBooks(this.selectedFilter);
+  }
+  onSortChange(selectedSort: string) {
+    this.selectedSort = selectedSort;
+    if (selectedSort === 'title') {
+      this.books = [...this.books].sort((a, b) =>
+        a.title.localeCompare(b.title)
+      );
+    } else if (selectedSort === 'author') {
+      this.books = [...this.books].sort((a, b) =>
+        a.authorName.localeCompare(b.authorName)
+      );
+    } else if (selectedSort === 'oldest') {
+      this.books = [...this.books].sort(
+        (a, b) => a.publishYear - b.publishYear
+      );
+    } else if (selectedSort === 'newest') {
+      this.books = [...this.books].sort(
+        (a, b) => b.publishYear - a.publishYear
+      );
+    }
+    console.log('🚀 ~ HomeComponent ~ onSortChange ~  this.books:', this.books);
+
+    this.cdr.detectChanges();
+  }
 
   getBooks(search: string) {
     this.loading = true;
     this.bookService.getBooks(search).subscribe(
       (data) => {
+        console.log('🚀 ~ HomeComponent ~ getBooks ~ data:', data);
         this.allBooks = data.docs.map((book: any) => ({
           title: book.title,
           authorName: book.author_name
