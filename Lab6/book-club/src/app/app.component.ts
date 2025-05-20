@@ -14,17 +14,21 @@ export class AppComponent {
   title = 'book-club';
 
   constructor(private router: Router) {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        localStorage.setItem('lastRoute', event.urlAfterRedirects);
-      }
-    });
+    if (typeof window !== 'undefined' && window.localStorage) {
+      this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          localStorage.setItem('lastRoute', event.urlAfterRedirects);
+        }
+      });
+    }
   }
 
   ngOnInit() {
-    const lastRoute = localStorage.getItem('lastRoute');
-    if (lastRoute && lastRoute !== '/' && window.location.pathname === '/') {
-      this.router.navigateByUrl(lastRoute);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const lastRoute = localStorage.getItem('lastRoute');
+      if (lastRoute && lastRoute !== '/' && window.location.pathname === '/') {
+        this.router.navigateByUrl(lastRoute);
+      }
     }
   }
 }
