@@ -40,6 +40,102 @@
   <nz-divider></nz-divider>
 
   <div
+    class="flex flex-row items-center justify-between w-full"
+    style="padding: 30px"
+  >
+    <div class="flex flex-row items-center justify-start">
+      <p style="margin: 0; padding-right: 20px">Filter by:</p>
+      <nz-select
+        [(ngModel)]="selectedFilter"
+        (ngModelChange)="onFilterChange(selectedFilter)"
+        nzPlaceHolder="Genre"
+        style="width: 200px; margin-right: 20px"
+        ><nz-option nzValue="art" nzLabel="Art"></nz-option>
+        <nz-option nzValue="biography" nzLabel="Biography"></nz-option>
+        <nz-option nzValue="history" nzLabel="History"></nz-option>
+        <nz-option nzValue="medical" nzLabel="Medical"></nz-option>
+        <nz-option nzValue="poetry" nzLabel="Poetry"></nz-option>
+        <nz-option nzValue="romance" nzLabel="Romance"></nz-option>
+        <nz-option nzValue="science" nzLabel="Science"></nz-option>
+        <nz-option nzValue="travel" nzLabel="Travel"></nz-option>
+        <nz-option nzValue="fantasy" nzLabel="Fantasy"></nz-option>
+        <nz-option nzValue="fiction" nzLabel="Fiction"></nz-option>
+        <nz-option nzValue="non-fiction" nzLabel="Non-Fiction"></nz-option>
+        <nz-option nzValue="mystery" nzLabel="Mystery"></nz-option>
+        <nz-option nzValue="thriller" nzLabel="Thriller"></nz-option>
+      </nz-select>
+
+      <nz-select
+        [(ngModel)]="selectedFilter"
+        (ngModelChange)="onFilterChange(selectedFilter)"
+        nzPlaceHolder="Author"
+        style="width: 200px; margin-right: 20px"
+        ><nz-option nzValue="J K Rowling" nzLabel="J K Rowling"></nz-option>
+        <nz-option nzValue="Stephen King" nzLabel="Stephen King"></nz-option>
+        <nz-option
+          nzValue="Agatha Christie"
+          nzLabel="Agatha Christie"
+        ></nz-option>
+        <nz-option
+          nzValue="George R R Martin"
+          nzLabel="George R R Martin"
+        ></nz-option>
+        <nz-option nzValue="J R R Tolkien" nzLabel="J R R Tolkien"></nz-option>
+        <nz-option nzValue="Isaac Asimov" nzLabel="Isaac Asimov"></nz-option>
+        <nz-option nzValue="Mark Twain" nzLabel="Mark Twain"></nz-option>
+        <nz-option
+          nzValue="Ernest Hemingway"
+          nzLabel="Ernest Hemingway"
+        ></nz-option>
+        <nz-option
+          nzValue="F Scott Fitzgerald"
+          nzLabel="F Scott Fitzgerald"
+        ></nz-option>
+        <nz-option nzValue="Jane Austen" nzLabel="Jane Austen"></nz-option>
+        <nz-option
+          nzValue="Charles Dickens"
+          nzLabel="Charles Dickens"
+        ></nz-option>
+        <nz-option nzValue="Leo Tolstoy" nzLabel="Leo Tolstoy"></nz-option>
+      </nz-select>
+
+      <nz-select
+        [(ngModel)]="selectedFilter"
+        (ngModelChange)="onFilterChange(selectedFilter)"
+        nzPlaceHolder="Language"
+        style="width: 200px; margin-right: 20px"
+        ><nz-option nzValue="eng" nzLabel="English"></nz-option>
+        <nz-option nzValue="fr" nzLabel="French"></nz-option>
+        <nz-option nzValue="de" nzLabel="German"></nz-option>
+        <nz-option nzValue="es" nzLabel="Spanish"></nz-option>
+        <nz-option nzValue="it" nzLabel="Italian"></nz-option>
+        <nz-option nzValue="pt" nzLabel="Portuguese"></nz-option>
+        <nz-option nzValue="ru" nzLabel="Russian"></nz-option>
+        <nz-option nzValue="zh" nzLabel="Chinese"></nz-option>
+      </nz-select>
+    </div>
+    <div class="flex flex-row items-center justify-start">
+      <p style="margin: 0; padding-right: 20px">Sort by:</p>
+      <nz-select
+        [(ngModel)]="selectedSort"
+        (ngModelChange)="onSortChange(selectedSort)"
+        nzPlaceHolder="Title"
+        style="width: 200px; margin-right: 20px"
+        ><nz-option
+          nzValue="title"
+          nzLabel="Title (alphabetically)"
+        ></nz-option>
+        <nz-option
+          nzValue="author"
+          nzLabel="Author (alphabetically)"
+        ></nz-option>
+        <nz-option nzValue="oldest" nzLabel="Oldest"></nz-option>
+        <nz-option nzValue="newest" nzLabel="Newest"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+
+  <div
     class="flex flex-row flex-wrap items-center justify-start w-full"
     style="padding: 30px"
     *ngIf="books && books.length > 0; else loading"
