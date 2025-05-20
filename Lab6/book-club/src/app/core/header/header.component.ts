@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { ThemeService } from '../../shared/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -21,11 +22,9 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 export class HeaderComponent {
   switchValue = false;
 
+  constructor(public themeService: ThemeService) {}
+
   onThemeToggle() {
-    if (this.switchValue) {
-      document.body.classList.add('dark-theme');
-    } else {
-      document.body.classList.remove('dark-theme');
-    }
+    this.themeService.toggleTheme();
   }
 }
