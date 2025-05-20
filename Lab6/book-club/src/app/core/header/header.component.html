@@ -1,11 +1,26 @@
-<ul nz-menu nzMode="horizontal" style="margin-left: 100px">
+<ul nz-menu nzMode="horizontal" style="margin-left: 100px" nzSelected>
   <li nz-menu-item nzSelected>
-    <a routerLink="/home" routerLinkActive="active">Home</a>
+    <a
+      routerLink="/home"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Home</a
+    >
   </li>
   <li nz-menu-item>
-    <a routerLink="/favorites" routerLinkActive="active">My Wishlist</a>
+    <a
+      routerLink="/favorites"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >My Wishlist</a
+    >
   </li>
   <li nz-menu-item>
-    <a routerLink="/my-reviews" routerLinkActive="active">Reviews</a>
+    <a
+      routerLink="/my-reviews"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Reviews</a
+    >
   </li>
 </ul>

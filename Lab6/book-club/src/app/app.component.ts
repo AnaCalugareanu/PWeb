@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { HeaderComponent } from './core/header/header.component';
 
@@ -8,8 +8,23 @@ import { HeaderComponent } from './core/header/header.component';
   standalone: true,
   imports: [NzButtonModule, RouterOutlet, HeaderComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'book-club';
+
+  constructor(private router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        localStorage.setItem('lastRoute', event.urlAfterRedirects);
+      }
+    });
+  }
+
+  ngOnInit() {
+    const lastRoute = localStorage.getItem('lastRoute');
+    if (lastRoute && lastRoute !== '/' && window.location.pathname === '/') {
+      this.router.navigateByUrl(lastRoute);
+    }
+  }
 }

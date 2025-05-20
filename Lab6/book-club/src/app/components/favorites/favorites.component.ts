@@ -21,10 +21,10 @@ import { ModalComponent } from '../../core/modal/modal.component';
   styleUrl: './favorites.component.scss',
 })
 export class FavoritesComponent {
-  constructor(private bookService: BookService) {}
   wishList: any[] = [];
   wishListId: any;
 
+  constructor(private bookService: BookService) {}
   ngOnInit(): void {
     this.bookService.wishlist$.subscribe((wishList) => {
       this.wishList = wishList;

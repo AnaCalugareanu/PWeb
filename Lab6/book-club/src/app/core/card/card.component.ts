@@ -40,4 +40,8 @@ export class CardComponent {
   handleAddToWishlist() {
     this.bookService.addToWishlist(this.book);
   }
+
+  handleRemoveFromWishlist() {
+    this.bookService.removeFromWishlist(this.book);
+  }
 }

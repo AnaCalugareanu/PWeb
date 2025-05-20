@@ -28,7 +28,16 @@
           >
             Edit
           </button>
-          <button nz-button nzType="primary" nzDanger>Delete</button>
+          <button
+            nz-button
+            nzType="primary"
+            nzDanger
+            (click)="
+              openRemoveIdModal(data.id, data.bookTitle, data.bookAuthor)
+            "
+          >
+            Delete
+          </button>
         </td>
       </tr>
       }
@@ -40,3 +49,17 @@
   [modalIsVisible]="modalIsVisible"
   (modalClosed)="handleModalClosed()"
 ></app-modal>
+
+<nz-modal
+  [(nzVisible)]="removeModalIsVisible"
+  nzTitle="The review is for {{ bookTitle }} by {{ bookAuthor }}"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  nzCancelText="No"
+  nzOkText="Yes"
+  nzOkDanger
+>
+  <ng-container *nzModalContent>
+    Are you sure you want to remove this review?</ng-container
+  >
+</nz-modal>
