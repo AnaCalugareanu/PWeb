@@ -1,26 +1,36 @@
-<ul nz-menu nzMode="horizontal" style="margin-left: 100px" nzSelected>
-  <li nz-menu-item nzSelected>
-    <a
-      routerLink="/home"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      >Home</a
-    >
-  </li>
-  <li nz-menu-item>
-    <a
-      routerLink="/favorites"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      >My Wishlist</a
-    >
-  </li>
-  <li nz-menu-item>
-    <a
-      routerLink="/my-reviews"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      >Reviews</a
-    >
-  </li>
-</ul>
+<div class="flex flex-row items-center justify-between" style="margin: 0 100px">
+  <ul nz-menu nzMode="horizontal" nzSelected>
+    <li nz-menu-item nzSelected>
+      <a
+        routerLink="/home"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Home</a
+      >
+    </li>
+    <li nz-menu-item>
+      <a
+        routerLink="/favorites"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >My Wishlist</a
+      >
+    </li>
+    <li nz-menu-item>
+      <a
+        routerLink="/my-reviews"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Reviews</a
+      >
+    </li>
+  </ul>
+  <nz-switch
+    [(ngModel)]="switchValue"
+    (ngModelChange)="onThemeToggle()"
+    [nzCheckedChildren]="checkedTemplate"
+    [nzUnCheckedChildren]="unCheckedTemplate"
+  ></nz-switch>
+  <ng-template #checkedTemplate>Light Mode</ng-template>
+  <ng-template #unCheckedTemplate>Dark Mode</ng-template>
+</div>

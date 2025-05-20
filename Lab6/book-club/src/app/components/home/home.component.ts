@@ -76,8 +76,6 @@ export class HomeComponent implements OnInit {
         (a, b) => b.publishYear - a.publishYear
       );
     }
-    console.log('🚀 ~ HomeComponent ~ onSortChange ~  this.books:', this.books);
-
     this.cdr.detectChanges();
   }
 
@@ -85,7 +83,6 @@ export class HomeComponent implements OnInit {
     this.loading = true;
     this.bookService.getBooks(search).subscribe(
       (data) => {
-        console.log('🚀 ~ HomeComponent ~ getBooks ~ data:', data);
         this.allBooks = data.docs.map((book: any) => ({
           title: book.title,
           authorName: book.author_name
