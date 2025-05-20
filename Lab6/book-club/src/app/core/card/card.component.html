@@ -33,14 +33,21 @@
 </ng-template>
 <ng-template #actionAddToWishlist>
   <p
+    *ngIf="!book.isInWishlist"
     style="margin: 0; gap: 5px"
     class="flex flex-row items-center justify-center"
     (click)="handleAddToWishlist()"
   >
-    <span *ngIf="book.isInWishlist" class="material-symbols-outlined"
-      >favorite</span
-    >
     Add to Wishlist
+  </p>
+  <p
+    style="margin: 0; gap: 5px; color: red"
+    *ngIf="book.isInWishlist"
+    class="flex flex-row items-center justify-center"
+    (click)="handleRemoveFromWishlist()"
+  >
+    <span class="material-symbols-outlined">favorite</span>
+    In your Wishlist
   </p>
 </ng-template>
 

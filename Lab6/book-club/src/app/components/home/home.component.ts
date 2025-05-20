@@ -5,10 +5,26 @@ import { CommonModule } from '@angular/common';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
 import { Subscription } from 'rxjs';
 
+import { FormsModule } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CardComponent, CommonModule, NzButtonComponent],
+  imports: [
+    CardComponent,
+    CommonModule,
+    NzButtonComponent,
+    FormsModule,
+    NzButtonModule,
+    NzInputModule,
+    NzIconModule,
+    NzDividerModule,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -19,6 +35,7 @@ export class HomeComponent implements OnInit {
   private currentIndex: number = 0;
   wishlist: any[] = [];
   private wishlistSub?: Subscription;
+  searchTerm: string = '';
 
   constructor(private bookService: BookService) {}
 
@@ -29,7 +46,12 @@ export class HomeComponent implements OnInit {
       this.updateBooksWishlistStatus();
     });
 
-    this.bookService.getBooks('romance').subscribe(
+    this.getBooks('harry potter');
+  }
+
+  getBooks(search: string) {
+    this.loading = true;
+    this.bookService.getBooks(search).subscribe(
       (data) => {
         this.allBooks = data.docs.map((book: any) => ({
           title: book.title,
@@ -67,6 +89,10 @@ export class HomeComponent implements OnInit {
         (w) => w.title === book.title && w.authorName === book.authorName
       ),
     }));
+  }
+
+  search(searchTerm: string) {
+    this.getBooks(searchTerm);
   }
 
   ngOnDestroy(): void {

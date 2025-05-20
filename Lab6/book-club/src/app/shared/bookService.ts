@@ -88,4 +88,12 @@ export class BookService {
     );
     this.wishlistSubject.next(updatedWishlist);
   }
+
+  removeReview(reviewId: any): void {
+    const currentReviews = this.reviewsSubject.value;
+    const updatedReviews = currentReviews.filter(
+      (review) => review.id !== reviewId
+    );
+    this.reviewsSubject.next(updatedReviews);
+  }
 }

@@ -12,6 +12,33 @@
     </div>
   </div>
 
+  <nz-input-group
+    nzSearch
+    nzSize="large"
+    [nzAddOnAfter]="suffixButton"
+    style="width: 50%; margin-top: 30px"
+  >
+    <input
+      type="text"
+      nz-input
+      [(ngModel)]="searchTerm"
+      placeholder="What are you looking for?"
+    />
+  </nz-input-group>
+  <ng-template #suffixButton>
+    <button
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      nzSearch
+      (click)="search(searchTerm)"
+    >
+      Search
+    </button>
+  </ng-template>
+
+  <nz-divider></nz-divider>
+
   <div
     class="flex flex-row flex-wrap items-center justify-start w-full"
     style="padding: 30px"
@@ -23,12 +50,25 @@
   </div>
 
   <ng-template #loading>
-    <h1 class="text-3xl font-bold mb-4" style="padding: 50px">
-      This great library is loading, please wait a moment...
+    <h1
+      class="text-3xl font-bold mb-4"
+      style="
+        padding: 50px;
+        background: whitesmoke;
+        border-radius: 10px;
+        margin-top: 20px;
+      "
+    >
+      This library is loading, please touch some grass for a moment...
     </h1>
   </ng-template>
 
-  <button nz-button nzType="primary" (click)="loadMoreBooks()">
+  <button
+    nz-button
+    nzType="primary"
+    (click)="loadMoreBooks()"
+    style="margin-bottom: 40px"
+  >
     Load more books
   </button>
 </div>
