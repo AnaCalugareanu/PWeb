@@ -2,6 +2,8 @@
 
 A command-line web client that allows you to make HTTP requests, search the web, and view content in a human-readable format without relying on external HTTP libraries.
 
+https://github.com/user-attachments/assets/ccb224ab-d28f-46f8-8798-9a128c54f1be
+
 
 ## Features
 
