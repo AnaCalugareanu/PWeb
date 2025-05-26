@@ -10,24 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Use Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
       - name: Install dependencies
-        working-directory: ./PWeb
+        working-directory: PWeb/Lab6/book-club
         run: npm install
 
-      - name: Build Angular project
-        working-directory: ./PWeb
+      - name: Build Angular app
+        working-directory: PWeb/Lab6/book-club
         run: npm run build -- --base-href /book-club/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./PWeb/dist/book-club
+          publish_dir: PWeb/Lab6/book-club/dist/book-club
