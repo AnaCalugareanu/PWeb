@@ -19,15 +19,15 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        working-directory: PWeb/Lab6/book-club
+        working-directory: Lab6/book-club
         run: npm install
 
       - name: Build Angular app
-        working-directory: PWeb/Lab6/book-club
+        working-directory: Lab6/book-club
         run: npm run build -- --base-href /book-club/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: PWeb/Lab6/book-club/dist/book-club
+          publish_dir: Lab6/book-club/dist/book-club
