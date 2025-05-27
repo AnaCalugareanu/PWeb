@@ -24,7 +24,7 @@ jobs:
 
       - name: Build Angular app
         working-directory: Lab6/book-club
-        run: npm run build -- --base-href /book-club/
+        run: ng build --configuration=production --base-href /PWeb/Lab6/book-club/
 
       - name: Copy index.html to 404.html for SPA fallback
         working-directory: Lab6/book-club/dist/book-club
