@@ -26,6 +26,9 @@ jobs:
         working-directory: Lab6/book-club
         run: npm run build -- --base-href /book-club/
 
+      - name: Copy index.html to 404.html for SPA fallback
+        run: cp Lab6/book-club/dist/book-club/index.html Lab6/book-club/dist/book-club/404.html
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
