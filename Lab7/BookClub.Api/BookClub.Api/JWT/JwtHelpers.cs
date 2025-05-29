@@ -7,29 +7,16 @@ using Microsoft.IdentityModel.Tokens;
 
 public static class JwtHelpers
 {
-    public static string IssueToken(JwtSettings cfg,
-                                    string? role = null,
-                                    IEnumerable<string>? perms = null)
+    public static string IssueToken(JwtSettings cfg, string role)  
     {
-        if (role is null && perms is null)
-            throw new ArgumentException("Must supply role or permissions");
-
-        var claims = new List<Claim>
+        var claims = new[]
         {
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(ClaimTypes.Role, role)
         };
 
-        // mutually exclusive styles, pick what caller sent
-        if (role is not null)
-            claims.Add(new Claim(ClaimTypes.Role, role));
-        else if (perms is not null)
-            claims.Add(new Claim("perms",
-                     JsonSerializer.Serialize(perms)));
-
         var creds = new SigningCredentials(
-                        new SymmetricSecurityKey(
-                            Encoding.UTF8.GetBytes(cfg.Key)),
-                        SecurityAlgorithms.HmacSha256);
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(cfg.Key)),
+            SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
             issuer: cfg.Issuer,

@@ -5,6 +5,14 @@ namespace BookClub.Api
 {
     public class LibraryContext : DbContext
     {
+        public LibraryContext(DbContextOptions options) : base(options)
+        {
+        }
+
+        protected LibraryContext()
+        {
+        }
+
         public DbSet<Book> Books => Set<Book>();
         public DbSet<Author> Authors => Set<Author>();
         public DbSet<Review> Reviews => Set<Review>();

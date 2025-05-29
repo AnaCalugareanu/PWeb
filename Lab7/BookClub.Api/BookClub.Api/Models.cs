@@ -1,7 +1,7 @@
 ﻿namespace BookClub.Api
 {
 
-    record BookDto(int Id, string Title, int AuthorId, bool IsFavorite);
-    record AuthorDto(int Id, string Name);
-    record ReviewDto(int Id, int BookId, string Text, int Rating);
+    public record BookDto(int Id, string Title, int AuthorId, bool IsFavorite);
+    public record AuthorDto(int Id, string Name);
+    public record ReviewDto(int Id, int BookId, string Text, int Rating);
 }
