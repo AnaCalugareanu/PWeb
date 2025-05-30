@@ -65,7 +65,7 @@ public class BooksController : ControllerBase
         entity.IsFavorite = dto.IsFavorite;
 
         await _db.SaveChangesAsync();
-        return NoContent();                      // 204 – update succeeded
+        return NoContent();                      
     }
 
     // ────────────────────────────────────────────────────────────
